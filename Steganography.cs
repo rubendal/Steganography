@@ -401,7 +401,7 @@ namespace Steganography
 
                     if (value != '#')
                         text += Convert.ToChar(value);
-                } while (value != '#');
+                } while (value != '#' && char.IsNumber((char)value));
                 int filelength = int.Parse(text);
                 ToolConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
                 text = string.Empty;
@@ -460,7 +460,7 @@ namespace Steganography
                     c++;
                     if (value != '#')
                         text += Convert.ToChar(value);
-                } while (value != '#');
+                } while (value != '#' && char.IsNumber((char)value));
                 int filelength = int.Parse(text);
                 ToolConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
                 text = string.Empty;
@@ -521,7 +521,7 @@ namespace Steganography
 
                     if (value != '#')
                         text += Convert.ToChar(value);
-                } while (value != '#');
+                } while (value != '#' && char.IsNumber((char)value));
                 int filelength = int.Parse(text);
                 ToolConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
                 text = string.Empty;

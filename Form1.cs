@@ -46,7 +46,7 @@ namespace Steganography
                     image.Dispose();
                 }
                 string ext = Path.GetExtension(loadDialog.FileName);
-                if (ext == ".png" || ext == ".bmp" || ext == "jpg")
+                if (ext == ".png" || ext == ".bmp" || ext == ".jpg")
                 {
                     try
                     {
