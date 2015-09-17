@@ -13,6 +13,12 @@ namespace Steganography
         [STAThread]
         static void Main()
         {
+            //test
+            string t = "test";
+            AESEncrypt encrypt = new AESEncrypt();
+            string encrypted = encrypt.EncryptString(t, "a password");
+            Console.WriteLine(encrypted);
+            Console.WriteLine(encrypt.DecryptString(encrypted,"a password"));
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

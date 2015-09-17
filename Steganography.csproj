@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="AudioSteganography.cs" />
     <Compile Include="CipherFile.cs" />
-    <Compile Include="DESEncrypt.cs" />
+    <Compile Include="AESEncrypt.cs" />
     <Compile Include="FileSizeFormatProvider.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

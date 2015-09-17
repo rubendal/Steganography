@@ -44,7 +44,7 @@ namespace Steganography
             SeedRNG generator = new SeedRNG((maxLinear + img.Width).GetHashCode(), maxLinear);
             ToolConsole.Write("Seed generated");
             string pass = string.Format("{0}x{1}={2}", img.Width, img.Height, maxLinear);
-            DESEncrypt encrypt = new DESEncrypt();
+            AESEncrypt encrypt = new AESEncrypt();
             string encrypted = encrypt.EncryptString(text, pass);
             ToolConsole.Write(string.Format("Text encrypted \n{0}",encrypted));
             ToolConsole.Write("Processing image...");
@@ -76,7 +76,7 @@ namespace Steganography
         {
             int maxLinear = img.Width * img.Height;
             string pass = string.Format("{0}x{1}={2}", img.Width, img.Height, maxLinear);
-            DESEncrypt encrypt = new DESEncrypt();
+            AESEncrypt encrypt = new AESEncrypt();
             int c = 0;
             string encrypted = encrypt.EncryptString(text, pass);
             ToolConsole.Write(string.Format("Text encrypted \n{0}", encrypted));
@@ -113,7 +113,7 @@ namespace Steganography
             SeedRNG generator = new SeedRNG((maxLinear + image.Width).GetHashCode(), maxLinear);
             ToolConsole.Write("Seed generated");
             string pass = string.Format("{0}x{1}={2}", image.Width, image.Height, maxLinear);
-            DESEncrypt encrypt = new DESEncrypt();
+            AESEncrypt encrypt = new AESEncrypt();
             string text = string.Empty;
             int value=0;
             ToolConsole.Write("Processing image...");
@@ -145,7 +145,7 @@ namespace Steganography
             Bitmap img = new Bitmap(image);
             int maxLinear = image.Width * image.Height;
             string pass = string.Format("{0}x{1}={2}", image.Width, image.Height, maxLinear);
-            DESEncrypt encrypt = new DESEncrypt();
+            AESEncrypt encrypt = new AESEncrypt();
             string text = string.Empty;
             int value = 0;
             int i = 0;

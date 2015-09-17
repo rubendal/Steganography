@@ -83,21 +83,21 @@
             // 
             // encryptButton
             // 
-            this.encryptButton.Location = new System.Drawing.Point(409, 133);
+            this.encryptButton.Location = new System.Drawing.Point(383, 133);
             this.encryptButton.Name = "encryptButton";
-            this.encryptButton.Size = new System.Drawing.Size(75, 23);
+            this.encryptButton.Size = new System.Drawing.Size(87, 23);
             this.encryptButton.TabIndex = 4;
-            this.encryptButton.Text = "Encrypt";
+            this.encryptButton.Text = "Encrypt String";
             this.encryptButton.UseVisualStyleBackColor = true;
             this.encryptButton.Click += new System.EventHandler(this.encryptButton_Click);
             // 
             // decryptButton
             // 
-            this.decryptButton.Location = new System.Drawing.Point(490, 133);
+            this.decryptButton.Location = new System.Drawing.Point(476, 133);
             this.decryptButton.Name = "decryptButton";
-            this.decryptButton.Size = new System.Drawing.Size(75, 23);
+            this.decryptButton.Size = new System.Drawing.Size(89, 23);
             this.decryptButton.TabIndex = 5;
-            this.decryptButton.Text = "Decrypt";
+            this.decryptButton.Text = "Decrypt String";
             this.decryptButton.UseVisualStyleBackColor = true;
             this.decryptButton.Click += new System.EventHandler(this.decryptButton_Click);
             // 

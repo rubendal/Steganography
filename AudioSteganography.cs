@@ -13,7 +13,7 @@ namespace Steganography
             WavAudio audio = new WavAudio(wav);
             uint value = 0;
             string pass = string.Format(audio.bitsPerSample.ToString());
-            DESEncrypt encrypt = new DESEncrypt();
+            AESEncrypt encrypt = new AESEncrypt();
             string encrypted = encrypt.EncryptString(text, pass);
             ToolConsole.Write(string.Format("Text encrypted \n{0}", encrypted));
             if (encrypted.Length <= Math.Floor((double)(audio.totalSamples / 8)))
@@ -57,7 +57,7 @@ namespace Steganography
             WavAudio audio = new WavAudio(wav);
             uint value = 0;
             string pass = string.Format(audio.bitsPerSample.ToString());
-            DESEncrypt encrypt = new DESEncrypt();
+            AESEncrypt encrypt = new AESEncrypt();
             string encrypted = encrypt.EncryptString(text, pass);
             ToolConsole.Write(string.Format("Text encrypted \n{0}", encrypted));
             if (encrypted.Length <= Math.Floor((double)(audio.totalSamples / 8)))
@@ -106,7 +106,7 @@ namespace Steganography
             SeedURNG generator = new SeedURNG(audio.totalSamples, audio.totalSamples);
             uint value = 0;
             string pass = string.Format(audio.bitsPerSample.ToString());
-            DESEncrypt encrypt = new DESEncrypt();
+            AESEncrypt encrypt = new AESEncrypt();
             ToolConsole.Write("Processing wav file...");
             do
             {
@@ -140,7 +140,7 @@ namespace Steganography
             uint n = 0;
             uint value = 0;
             string pass = string.Format(audio.bitsPerSample.ToString());
-            DESEncrypt encrypt = new DESEncrypt();
+            AESEncrypt encrypt = new AESEncrypt();
             ToolConsole.Write("Processing wav file...");
             do
             {
