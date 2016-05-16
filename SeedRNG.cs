@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Numerics;
 
 namespace Steganography
 {
@@ -12,10 +13,12 @@ namespace Steganography
         private int limit { get; set; }
         private Random r;
         private List<int> exp = new List<int>();
+        private LCG lcg;
         public SeedRNG(int seed, int limit, bool b = false)
         {
             this.seed = seed;
             this.limit = limit;
+            lcg = new LCG(limit, new Random(seed).Next(0, limit),seed);
             obtained = new List<int>();
             r = new Random(seed);
             if (b)
@@ -28,12 +31,7 @@ namespace Steganography
         {
             get
             {
-                int x = 0;
-                do{
-                    x = r.Next(0, limit);
-                } while (obtained.Contains(x));
-                obtained.Add(x);
-                return x;
+                return (int)lcg.next();
             }
         }
 

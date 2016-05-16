@@ -52,7 +52,7 @@ namespace Steganography
             }
             else
             {
-                ToolConsole.Write("This file is incompatible, bits per sample must be 8, 16, 24 or 32");
+                OutputConsole.Write("This file is incompatible, bits per sample must be 8, 16, 24 or 32");
                 this.data = null;
             }
         }

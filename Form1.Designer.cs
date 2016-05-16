@@ -216,12 +216,14 @@
             // randomM2
             // 
             this.randomM2.AutoSize = true;
+            this.randomM2.Enabled = false;
             this.randomM2.Location = new System.Drawing.Point(189, 303);
             this.randomM2.Name = "randomM2";
             this.randomM2.Size = new System.Drawing.Size(83, 17);
             this.randomM2.TabIndex = 16;
             this.randomM2.Text = "Random M2";
             this.randomM2.UseVisualStyleBackColor = true;
+            this.randomM2.Visible = false;
             this.randomM2.CheckedChanged += new System.EventHandler(this.randomM2_CheckedChanged);
             // 
             // Form1

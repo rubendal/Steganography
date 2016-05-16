@@ -29,7 +29,7 @@ namespace Steganography
         public Form1()
         {
             InitializeComponent();
-            ToolConsole.Bind(console);
+            OutputConsole.Bind(console);
             random.Checked = true;
             currentMode = Mode.Image;
             stopwatch = new Stopwatch();
@@ -52,8 +52,8 @@ namespace Steganography
                     {
                         image = Image.FromFile(loadDialog.FileName);
                         imageBox.Image = image;
-                        ToolConsole.Write(string.Format("Image loaded \nTotal pixels = {0}", image.Width * image.Height));
-                        ToolConsole.Write(string.Format("Maximum file size for this image = {0} - (file size digits + file name character count) bytes", FileSizeFormatProvider.GetFileSize((image.Width * image.Height) - 2)));
+                        OutputConsole.Write(string.Format("Image loaded \nTotal pixels = {0}", image.Width * image.Height));
+                        OutputConsole.Write(string.Format("Maximum file size for this image = {0} - (file size digits + file name character count) bytes", FileSizeFormatProvider.GetFileSize((image.Width * image.Height) - 2)));
                         currentMode = Mode.Image;
                         audio = null;
                         audioLabel.Visible = false;
@@ -87,7 +87,7 @@ namespace Steganography
                     if (res == System.Windows.Forms.DialogResult.OK)
                     {
                         encrypted.Save(saveDialog.FileName);
-                        ToolConsole.Write("Image saved");
+                        OutputConsole.Write("Image saved");
                     }
                 }
             }
@@ -108,7 +108,7 @@ namespace Steganography
                     if (res == System.Windows.Forms.DialogResult.OK)
                     {
                         File.WriteAllBytes(saveWav.FileName, file);
-                        ToolConsole.Write("Wav file saved");
+                        OutputConsole.Write("Wav file saved");
                     }
                 }
             }
@@ -130,7 +130,7 @@ namespace Steganography
                 if (text != null)
                 {
                     textBox.Text = text;
-                    ToolConsole.Write("Text decrypted");
+                    OutputConsole.Write("Text decrypted");
                 }
                 else
                 {
@@ -151,7 +151,7 @@ namespace Steganography
                 if (text != null)
                 {
                     textBox.Text = text;
-                    ToolConsole.Write("Text decrypted");
+                    OutputConsole.Write("Text decrypted");
                 }
             }
         }
@@ -166,7 +166,7 @@ namespace Steganography
                 {
                     file = File.ReadAllBytes(loadFileDialog.FileName);
                     filename = loadFileDialog.SafeFileName;
-                    ToolConsole.Write("Added File to buffer");
+                    OutputConsole.Write("Added File to buffer");
                     Bitmap encrypted;
                     stopwatch.Restart();
                     if (random.Checked)
@@ -187,13 +187,13 @@ namespace Steganography
                     if (encrypted != null)
                     {
                         stopwatch.Stop();
-                        ToolConsole.Write(string.Format("Process completed in {0} ms", stopwatch.ElapsedMilliseconds));
+                        OutputConsole.Write(string.Format("Process completed in {0} ms", stopwatch.ElapsedMilliseconds));
                         saveDialog.FileName = "*.*";
                         DialogResult res2 = saveDialog.ShowDialog();
                         if (res2 == System.Windows.Forms.DialogResult.OK)
                         {
                             encrypted.Save(saveDialog.FileName);
-                            ToolConsole.Write("Image saved");
+                            OutputConsole.Write("Image saved");
                         }
                     }
                     stopwatch.Reset();
@@ -225,12 +225,12 @@ namespace Steganography
                     if (file != null)
                     {
                         stopwatch.Stop();
-                        ToolConsole.Write(string.Format("Process completed in {0} ms", stopwatch.ElapsedMilliseconds));
+                        OutputConsole.Write(string.Format("Process completed in {0} ms", stopwatch.ElapsedMilliseconds));
                         DialogResult res2 = saveWav.ShowDialog();
                         if (res2 == System.Windows.Forms.DialogResult.OK)
                         {
                             File.WriteAllBytes(saveWav.FileName, file);
-                            ToolConsole.Write("Wav file saved");
+                            OutputConsole.Write("Wav file saved");
                         }
                     }
                     stopwatch.Reset();
@@ -262,13 +262,13 @@ namespace Steganography
                 if (f != null)
                 {
                     stopwatch.Stop();
-                    ToolConsole.Write(string.Format("Process completed in {0} ms", stopwatch.ElapsedMilliseconds));
+                    OutputConsole.Write(string.Format("Process completed in {0} ms", stopwatch.ElapsedMilliseconds));
                     saveFileDialog.FileName = f.filename;
                     DialogResult res = saveFileDialog.ShowDialog();
                     if (res == System.Windows.Forms.DialogResult.OK)
                     {
                         File.WriteAllBytes(saveFileDialog.FileName, f.file);
-                        ToolConsole.Write("File saved");
+                        OutputConsole.Write("File saved");
                         if (Path.GetExtension(saveFileDialog.FileName) == ".bmp" || Path.GetExtension(saveFileDialog.FileName) == ".png" || Path.GetExtension(saveFileDialog.FileName) == ".jpg")
                         {
                             ImgPreview p = new ImgPreview(Image.FromFile(saveFileDialog.FileName));
@@ -304,13 +304,13 @@ namespace Steganography
                 if (file != null)
                 {
                     stopwatch.Stop();
-                    ToolConsole.Write(string.Format("Process completed in {0} ms", stopwatch.ElapsedMilliseconds));
+                    OutputConsole.Write(string.Format("Process completed in {0} ms", stopwatch.ElapsedMilliseconds));
                     saveFileDialog.FileName = file.filename;
                     DialogResult res = saveFileDialog.ShowDialog();
                     if (res == System.Windows.Forms.DialogResult.OK)
                     {
                         File.WriteAllBytes(saveFileDialog.FileName, file.file);
-                        ToolConsole.Write("File saved");
+                        OutputConsole.Write("File saved");
                         if (Path.GetExtension(saveFileDialog.FileName) == ".bmp" || Path.GetExtension(saveFileDialog.FileName) == ".png" || Path.GetExtension(saveFileDialog.FileName) == ".jpg")
                         {
                             ImgPreview p = new ImgPreview(Image.FromFile(saveFileDialog.FileName));
@@ -334,13 +334,14 @@ namespace Steganography
         private void random_CheckedChanged(object sender, EventArgs e)
         {
             if (random.Checked)
-                ToolConsole.Write("Using random steganography algorithm (Not recommended for huge files or text near 60% image pixels or more than 10% of available bytes in wav files)");
+                OutputConsole.Write("Using random steganography algorithm (Requires prime number generation, slow for huge images/wav files, once the generator has reached the needed number it can process files quickly)");
+            //OutputConsole.Write("Using random steganography algorithm (Not recommended for huge files or text near 60% image pixels or more than 10% of available bytes in wav files)");
         }
 
         private void linear_CheckedChanged(object sender, EventArgs e)
         {
             if (linear.Checked)
-                ToolConsole.Write("Using linear steganography algorithm (Fastest)");
+                OutputConsole.Write("Using linear steganography algorithm (Fastest)");
         }
 
         private void console_KeyDown(object sender, KeyEventArgs e)
@@ -360,8 +361,8 @@ namespace Steganography
                 WavAudio wav = new WavAudio(audio);
                 if (wav.data != null)
                 {
-                    ToolConsole.Write(string.Format("Audio loaded \nSamples found: {0}", wav.totalSamples));
-                    ToolConsole.Write(string.Format("Maximum file size for this file = {0} - (file size digits + file name character count) bytes", FileSizeFormatProvider.GetFileSize(wav.bytesAvailable)));
+                    OutputConsole.Write(string.Format("Audio loaded \nSamples found: {0}", wav.totalSamples));
+                    OutputConsole.Write(string.Format("Maximum file size for this file = {0} - (file size digits + file name character count) bytes", FileSizeFormatProvider.GetFileSize(wav.bytesAvailable)));
                     currentMode = Mode.Audio;
                     if (image != null)
                     {
@@ -381,8 +382,9 @@ namespace Steganography
 
         private void randomM2_CheckedChanged(object sender, EventArgs e)
         {
+            //Removed
             if (randomM2.Checked)
-                ToolConsole.Write("Using random method 2 steganography algorithm (Poor performance on small files, but better performance than random using bigger files) \nWorks only with files...");
+                OutputConsole.Write("Using random method 2 steganography algorithm (Poor performance on small files, but better performance than random using bigger files) \nWorks only with files...");
         }
 
     }

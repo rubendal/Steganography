@@ -42,12 +42,12 @@ namespace Steganography
         {
             int maxLinear = img.Width * img.Height;
             SeedRNG generator = new SeedRNG((maxLinear + img.Width).GetHashCode(), maxLinear);
-            ToolConsole.Write("Seed generated");
+            OutputConsole.Write("Seed generated");
             string pass = string.Format("{0}x{1}={2}", img.Width, img.Height, maxLinear);
             AESEncrypt encrypt = new AESEncrypt();
             string encrypted = encrypt.EncryptString(text, pass);
-            ToolConsole.Write(string.Format("Text encrypted \n{0}",encrypted));
-            ToolConsole.Write("Processing image...");
+            OutputConsole.Write(string.Format("Text encrypted \n{0}",encrypted));
+            OutputConsole.Write("Processing image...");
             if (encrypted.Length < maxLinear)
             {
                 for (int i = 0; i < encrypted.Length; i++)
@@ -63,11 +63,11 @@ namespace Steganography
                 Point pointEnd = LinearIndexToPoint(generator.Next, img.Width, img.Height);
                 Color pixelEnd = img.GetPixel(pointEnd.X, pointEnd.Y);
                 img.SetPixel(pointEnd.X, pointEnd.Y, EncodePixel(pixelEnd, 0));
-                ToolConsole.Write("Finished embedding encrypted text");
+                OutputConsole.Write("Finished embedding encrypted text");
             }
             else
             {
-                ToolConsole.Write("Error: Image size doesn't support encrypted text size");
+                OutputConsole.Write("Error: Image size doesn't support encrypted text size");
                 img = null;
             }
         }
@@ -79,8 +79,8 @@ namespace Steganography
             AESEncrypt encrypt = new AESEncrypt();
             int c = 0;
             string encrypted = encrypt.EncryptString(text, pass);
-            ToolConsole.Write(string.Format("Text encrypted \n{0}", encrypted));
-            ToolConsole.Write("Processing image...");
+            OutputConsole.Write(string.Format("Text encrypted \n{0}", encrypted));
+            OutputConsole.Write("Processing image...");
             if (encrypted.Length < maxLinear)
             {
                 for (int i = 0; i < encrypted.Length; i++)
@@ -97,11 +97,11 @@ namespace Steganography
                 Point pointEnd = LinearIndexToPoint(c, img.Width, img.Height);
                 Color pixelEnd = img.GetPixel(pointEnd.X, pointEnd.Y);
                 img.SetPixel(pointEnd.X, pointEnd.Y, EncodePixel(pixelEnd, 0));
-                ToolConsole.Write("Finished embedding encrypted text");
+                OutputConsole.Write("Finished embedding encrypted text");
             }
             else
             {
-                ToolConsole.Write("Error: Image size doesn't support encrypted text size");
+                OutputConsole.Write("Error: Image size doesn't support encrypted text size");
                 img = null;
             }
         }
@@ -111,12 +111,12 @@ namespace Steganography
             Bitmap img = new Bitmap(image);
             int maxLinear = image.Width * image.Height;
             SeedRNG generator = new SeedRNG((maxLinear + image.Width).GetHashCode(), maxLinear);
-            ToolConsole.Write("Seed generated");
+            OutputConsole.Write("Seed generated");
             string pass = string.Format("{0}x{1}={2}", image.Width, image.Height, maxLinear);
             AESEncrypt encrypt = new AESEncrypt();
             string text = string.Empty;
             int value=0;
-            ToolConsole.Write("Processing image...");
+            OutputConsole.Write("Processing image...");
             do
             {
                 Point point = LinearIndexToPoint(generator.Next, image.Width, image.Height);
@@ -128,13 +128,13 @@ namespace Steganography
             } while (value != 0);
             try
             {
-                ToolConsole.Write(string.Format("String found: \n{0}", text));
-                ToolConsole.Write("Decrypting text...");
+                OutputConsole.Write(string.Format("String found: \n{0}", text));
+                OutputConsole.Write("Decrypting text...");
                 return encrypt.DecryptString(text, pass);
             }
             catch (Exception e)
             {
-                ToolConsole.Write("Error: Text not found");
+                OutputConsole.Write("Error: Text not found");
                 Console.WriteLine(e.Message);
                 return null;
             }
@@ -149,7 +149,7 @@ namespace Steganography
             string text = string.Empty;
             int value = 0;
             int i = 0;
-            ToolConsole.Write("Processing image...");
+            OutputConsole.Write("Processing image...");
             do
             {
                 Point point = LinearIndexToPoint(i, image.Width, image.Height);
@@ -161,13 +161,13 @@ namespace Steganography
             } while (value != 255);
             try
             {
-                ToolConsole.Write(string.Format("String found: \n{0}", text));
-                ToolConsole.Write("Decrypting text...");
+                OutputConsole.Write(string.Format("String found: \n{0}", text));
+                OutputConsole.Write("Decrypting text...");
                 return encrypt.DecryptString(text, pass);
             }
             catch (Exception e)
             {
-                ToolConsole.Write("Error: Text not found");
+                OutputConsole.Write("Error: Text not found");
                 Console.WriteLine(e.Message);
                 return null;
             }
@@ -198,18 +198,18 @@ namespace Steganography
         {
             Bitmap backup = img.Clone() as Bitmap;
             int maxLinear = img.Width * img.Height;
-            ToolConsole.Write(string.Format("File size: {0}", FileSizeFormatProvider.GetFileSize(file.Length)));
+            OutputConsole.Write(string.Format("File size: {0}", FileSizeFormatProvider.GetFileSize(file.Length)));
             SeedRNG generator = new SeedRNG((maxLinear + img.Width).GetHashCode(), maxLinear);
-            ToolConsole.Write("Seed generated");
+            OutputConsole.Write("Seed generated");
             int extraBytes = 2 + filename.Length + file.Length.ToString().Length;
             HiddenFile f = new HiddenFile(file, filename);
             f.cipherFile((maxLinear + img.Width).GetHashCode());
-            ToolConsole.Write("Ciphering file...");
+            OutputConsole.Write("Ciphering file...");
             if (file.Length < maxLinear - extraBytes)
             {
                 string fileLength = file.Length.ToString();
-                ToolConsole.Write("Processing image...");
-                ToolConsole.Write("Writing metadata...");
+                OutputConsole.Write("Processing image...");
+                OutputConsole.Write("Writing metadata...");
                 for (int i = 0; i < fileLength.Length; i++)
                 {
                     Point point = LinearIndexToPoint(generator.Next, img.Width, img.Height);
@@ -237,7 +237,7 @@ namespace Steganography
                 pixel1 = img.GetPixel(point1.X, point1.Y);
                 value1 = 0;
                 img.SetPixel(point1.X, point1.Y, EncodePixel(pixel1,value1));
-                ToolConsole.Write("Writing file data...");
+                OutputConsole.Write("Writing file data...");
                 //Write file
                 for (int i = 0; i < file.Length; i++)
                 {
@@ -246,11 +246,11 @@ namespace Steganography
                     int value = f.file[i];
                     img.SetPixel(point.X, point.Y, EncodePixel(pixel, value));
                 }
-                ToolConsole.Write("Finished embedding file");
+                OutputConsole.Write("Finished embedding file");
             }
             else
             {
-                ToolConsole.Write("File size is greater than total pixels in image with extra data, resize or use another image to encrypt this file");
+                OutputConsole.Write("File size is greater than total pixels in image with extra data, resize or use another image to encrypt this file");
                 img = null;
             }
         }
@@ -260,16 +260,16 @@ namespace Steganography
             Bitmap backup = img.Clone() as Bitmap;
             int maxLinear = img.Width * img.Height;
             int c = 0;
-            ToolConsole.Write(string.Format("File size: {0}", FileSizeFormatProvider.GetFileSize(file.Length)));
+            OutputConsole.Write(string.Format("File size: {0}", FileSizeFormatProvider.GetFileSize(file.Length)));
             int extraBytes = 2 + filename.Length + file.Length.ToString().Length;
             HiddenFile f = new HiddenFile(file, filename);
             f.cipherFile((maxLinear + img.Width).GetHashCode());
-            ToolConsole.Write("Ciphering file...");
+            OutputConsole.Write("Ciphering file...");
             if (file.Length < maxLinear - extraBytes)
             {
                 string fileLength = file.Length.ToString();
-                ToolConsole.Write("Processing image...");
-                ToolConsole.Write("Writing metadata...");
+                OutputConsole.Write("Processing image...");
+                OutputConsole.Write("Writing metadata...");
                 for (int i = 0; i < fileLength.Length; i++)
                 {
                     Point point = LinearIndexToPoint(c, img.Width, img.Height);
@@ -301,7 +301,7 @@ namespace Steganography
                 img.SetPixel(point1.X, point1.Y, EncodePixel(pixel1, value1));
                 c++;
                 //Write file
-                ToolConsole.Write("Writing file data...");
+                OutputConsole.Write("Writing file data...");
                 for (int i = 0; i < file.Length; i++)
                 {
                     Point point = LinearIndexToPoint(c, img.Width, img.Height);
@@ -310,11 +310,11 @@ namespace Steganography
                     img.SetPixel(point.X, point.Y, EncodePixel(pixel, value));
                     c++;
                 }
-                ToolConsole.Write("Finished embedding file");
+                OutputConsole.Write("Finished embedding file");
             }
             else
             {
-                ToolConsole.Write("File size is greater than total pixels in image with extra data, resize or use another image to encrypt this file");
+                OutputConsole.Write("File size is greater than total pixels in image with extra data, resize or use another image to encrypt this file");
                 img = null;
             }
         }
@@ -323,18 +323,18 @@ namespace Steganography
         {
             Bitmap backup = img.Clone() as Bitmap;
             int maxLinear = img.Width * img.Height;
-            ToolConsole.Write(string.Format("File size: {0}", FileSizeFormatProvider.GetFileSize(file.Length)));
+            OutputConsole.Write(string.Format("File size: {0}", FileSizeFormatProvider.GetFileSize(file.Length)));
             SeedRNG generator = new SeedRNG((maxLinear + img.Width).GetHashCode(), maxLinear, true);
-            ToolConsole.Write("Seed generated");
+            OutputConsole.Write("Seed generated");
             int extraBytes = 2 + filename.Length + file.Length.ToString().Length;
             HiddenFile f = new HiddenFile(file, filename);
             f.cipherFile((maxLinear + img.Width).GetHashCode());
-            ToolConsole.Write("Ciphering file...");
+            OutputConsole.Write("Ciphering file...");
             if (file.Length < maxLinear - extraBytes)
             {
                 string fileLength = file.Length.ToString();
-                ToolConsole.Write("Processing image...");
-                ToolConsole.Write("Writing metadata...");
+                OutputConsole.Write("Processing image...");
+                OutputConsole.Write("Writing metadata...");
                 for (int i = 0; i < fileLength.Length; i++)
                 {
                     Point point = LinearIndexToPoint(generator.NextN, img.Width, img.Height);
@@ -362,7 +362,7 @@ namespace Steganography
                 pixel1 = img.GetPixel(point1.X, point1.Y);
                 value1 = 0;
                 img.SetPixel(point1.X, point1.Y, EncodePixel(pixel1, value1));
-                ToolConsole.Write("Writing file data...");
+                OutputConsole.Write("Writing file data...");
                 //Write file
                 for (int i = 0; i < file.Length; i++)
                 {
@@ -371,11 +371,11 @@ namespace Steganography
                     int value = f.file[i];
                     img.SetPixel(point.X, point.Y, EncodePixel(pixel, value));
                 }
-                ToolConsole.Write("Finished embedding file");
+                OutputConsole.Write("Finished embedding file");
             }
             else
             {
-                ToolConsole.Write("File size is greater than total pixels in image with extra data, resize or use another image to encrypt this file");
+                OutputConsole.Write("File size is greater than total pixels in image with extra data, resize or use another image to encrypt this file");
                 img = null;
             }
         }
@@ -387,12 +387,12 @@ namespace Steganography
                 Bitmap img = new Bitmap(image);
                 int maxLinear = image.Width * image.Height;
                 SeedRNG generator = new SeedRNG((maxLinear + image.Width).GetHashCode(), maxLinear);
-                ToolConsole.Write("Seed generated");
+                OutputConsole.Write("Seed generated");
                 string text = string.Empty;
                 int value = 0;
                 //Read file length
-                ToolConsole.Write("Processing image...");
-                ToolConsole.Write("Reading metadata...");
+                OutputConsole.Write("Processing image...");
+                OutputConsole.Write("Reading metadata...");
                 do
                 {
                     Point point = LinearIndexToPoint(generator.Next, image.Width, image.Height);
@@ -403,7 +403,7 @@ namespace Steganography
                         text += Convert.ToChar(value);
                 } while (value != '#' && char.IsNumber((char)value));
                 int filelength = int.Parse(text);
-                ToolConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
+                OutputConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
                 text = string.Empty;
                 value = 0;
                 //Read filename
@@ -417,7 +417,7 @@ namespace Steganography
                         text += Convert.ToChar(value);
                 } while (value != 0);
                 string filename = text;
-                ToolConsole.Write(string.Format("Extracted file name: {0}", filename));
+                OutputConsole.Write(string.Format("Extracted file name: {0}", filename));
                 byte[] file = new byte[filelength];
                 for (int i = 0; i < filelength; i++)
                 {
@@ -426,15 +426,15 @@ namespace Steganography
                     value = DecodePixel(pixel);
                     file[i] = (byte)value;
                 }
-                ToolConsole.Write(string.Format("Extracted file content"));
+                OutputConsole.Write(string.Format("Extracted file content"));
                 HiddenFile f = new HiddenFile(file, filename);
                 f.cipherFile((maxLinear + img.Width).GetHashCode());
-                ToolConsole.Write("Ciphering file...");
+                OutputConsole.Write("Ciphering file...");
                 return f;
             }
             catch (Exception e)
             {
-                ToolConsole.Write("Error: File not found");
+                OutputConsole.Write("Error: File not found");
                 Console.WriteLine(e.Message);
                 return null;
             }
@@ -449,8 +449,8 @@ namespace Steganography
                 int c = 0;
                 string text = string.Empty;
                 int value = 0;
-                ToolConsole.Write("Processing image...");
-                ToolConsole.Write("Reading metadata...");
+                OutputConsole.Write("Processing image...");
+                OutputConsole.Write("Reading metadata...");
                 //Read file length
                 do
                 {
@@ -462,7 +462,7 @@ namespace Steganography
                         text += Convert.ToChar(value);
                 } while (value != '#' && char.IsNumber((char)value));
                 int filelength = int.Parse(text);
-                ToolConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
+                OutputConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
                 text = string.Empty;
                 value = 0;
                 //Read filename
@@ -476,7 +476,7 @@ namespace Steganography
                         text += Convert.ToChar(value);
                 } while (value != 0);
                 string filename = text;
-                ToolConsole.Write(string.Format("Extracted file name: {0}", filename));
+                OutputConsole.Write(string.Format("Extracted file name: {0}", filename));
                 byte[] file = new byte[filelength];
                 for (int i = 0; i < filelength; i++)
                 {
@@ -486,15 +486,15 @@ namespace Steganography
                     file[i] = (byte)value;
                     c++;
                 }
-                ToolConsole.Write(string.Format("Extracted file content"));
+                OutputConsole.Write(string.Format("Extracted file content"));
                 HiddenFile f = new HiddenFile(file, filename);
                 f.cipherFile((maxLinear + img.Width).GetHashCode());
-                ToolConsole.Write("Ciphering file...");
+                OutputConsole.Write("Ciphering file...");
                 return f;
             }
             catch (Exception e)
             {
-                ToolConsole.Write("Error: File not found");
+                OutputConsole.Write("Error: File not found");
                 Console.WriteLine(e.Message);
                 return null;
             }
@@ -507,12 +507,12 @@ namespace Steganography
                 Bitmap img = new Bitmap(image);
                 int maxLinear = image.Width * image.Height;
                 SeedRNG generator = new SeedRNG((maxLinear + image.Width).GetHashCode(), maxLinear, true);
-                ToolConsole.Write("Seed generated");
+                OutputConsole.Write("Seed generated");
                 string text = string.Empty;
                 int value = 0;
                 //Read file length
-                ToolConsole.Write("Processing image...");
-                ToolConsole.Write("Reading metadata...");
+                OutputConsole.Write("Processing image...");
+                OutputConsole.Write("Reading metadata...");
                 do
                 {
                     Point point = LinearIndexToPoint(generator.NextN, image.Width, image.Height);
@@ -523,7 +523,7 @@ namespace Steganography
                         text += Convert.ToChar(value);
                 } while (value != '#' && char.IsNumber((char)value));
                 int filelength = int.Parse(text);
-                ToolConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
+                OutputConsole.Write(string.Format("Extracted file size: {0} bytes", filelength));
                 text = string.Empty;
                 value = 0;
                 //Read filename
@@ -537,7 +537,7 @@ namespace Steganography
                         text += Convert.ToChar(value);
                 } while (value != 0);
                 string filename = text;
-                ToolConsole.Write(string.Format("Extracted file name: {0}", filename));
+                OutputConsole.Write(string.Format("Extracted file name: {0}", filename));
                 byte[] file = new byte[filelength];
                 for (int i = 0; i < filelength; i++)
                 {
@@ -546,15 +546,15 @@ namespace Steganography
                     value = DecodePixel(pixel);
                     file[i] = (byte)value;
                 }
-                ToolConsole.Write(string.Format("Extracted file content"));
+                OutputConsole.Write(string.Format("Extracted file content"));
                 HiddenFile f = new HiddenFile(file, filename);
                 f.cipherFile((maxLinear + img.Width).GetHashCode());
-                ToolConsole.Write("Ciphering file...");
+                OutputConsole.Write("Ciphering file...");
                 return f;
             }
             catch (Exception e)
             {
-                ToolConsole.Write("Error: File not found");
+                OutputConsole.Write("Error: File not found");
                 Console.WriteLine(e.Message);
                 return null;
             }
